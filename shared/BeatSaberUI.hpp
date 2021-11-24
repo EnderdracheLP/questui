@@ -41,6 +41,7 @@
 #include "TMPro/TMP_FontAsset.hpp"
 
 #include "VRUIControls/PhysicsRaycasterWithCache.hpp"
+#include "GlobalNamespace/IVRPlatformHelper.hpp"
 
 namespace QuestUI::BeatSaberUI {
 
@@ -53,6 +54,8 @@ namespace QuestUI::BeatSaberUI {
     UnityEngine::Sprite* GetEditIcon();
 
     VRUIControls::PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache();
+
+    GlobalNamespace::IVRPlatformHelper* GetIVRPlatformHelper();
 
     void ClearCache();
 

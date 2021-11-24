@@ -170,6 +170,16 @@ namespace QuestUI::BeatSaberUI {
         return physicsRaycaster;
     }
 
+    IVRPlatformHelper* platformHelper = nullptr;
+    IVRPlatformHelper* GetIVRPlatformHelper()
+    {
+        if(!platformHelper)
+            platformHelper = ArrayUtil::First(Resources::FindObjectsOfTypeAll<VRController*>())->dyn__vrPlatformHelper();
+        if (!platformHelper)
+            CacheNotFoundWarningLog(IVRPlatformHelper);
+        return platformHelper;
+    }
+
     DiContainer* diContainer = nullptr;
     DiContainer* GetDiContainer()
     {
@@ -186,6 +196,7 @@ namespace QuestUI::BeatSaberUI {
         mainUIFontMaterial = nullptr;
         editIcon = nullptr;
         physicsRaycaster = nullptr;
+        platformHelper = nullptr;
         diContainer = nullptr;
     }
 
@@ -746,10 +757,10 @@ namespace QuestUI::BeatSaberUI {
         TextPageScrollView* textScrollView = Object::Instantiate(ArrayUtil::First(Resources::FindObjectsOfTypeAll<ReleaseInfoViewController*>())->textPageScrollView, parent);
         static auto textScrollViewName = il2cpp_utils::createcsstr("QuestUIScrollView", il2cpp_utils::StringType::Manual);
         textScrollView->set_name(textScrollViewName);
-        Button* pageUpButton = textScrollView->pageUpButton;
-        Button* pageDownButton = textScrollView->pageDownButton;
-        VerticalScrollIndicator* verticalScrollIndicator = textScrollView->verticalScrollIndicator; 
-        RectTransform* viewport = textScrollView->viewport;
+        Button* pageUpButton = textScrollView->dyn__pageUpButton();
+        Button* pageDownButton = textScrollView->dyn__pageDownButton();
+        VerticalScrollIndicator* verticalScrollIndicator = textScrollView->dyn__verticalScrollIndicator(); 
+        RectTransform* viewport = textScrollView->dyn__viewport();
 
         auto* physicsRaycaster = GetPhysicsRaycasterWithCache();
         if(physicsRaycaster)
@@ -761,10 +772,11 @@ namespace QuestUI::BeatSaberUI {
         gameObject->SetActive(false);
 
         ScrollView* scrollView = gameObject->AddComponent<ScrollView*>();
-        scrollView->pageUpButton = pageUpButton;
-        scrollView->pageDownButton = pageDownButton;
-        scrollView->verticalScrollIndicator = verticalScrollIndicator;
-        scrollView->viewport = viewport;
+        scrollView->dyn__pageUpButton() = pageUpButton;
+        scrollView->dyn__pageDownButton() = pageDownButton;
+        scrollView->dyn__verticalScrollIndicator() = verticalScrollIndicator;
+        scrollView->dyn__viewport() = viewport;
+        scrollView->dyn__platformHelper() = GetIVRPlatformHelper();
 
         viewport->set_anchorMin(UnityEngine::Vector2(0.0f, 0.0f));
         viewport->set_anchorMax(UnityEngine::Vector2(1.0f, 1.0f));
